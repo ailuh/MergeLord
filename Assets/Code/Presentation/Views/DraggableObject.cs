@@ -1,5 +1,5 @@
-﻿using Code.Application.Managers;
-using Code.Presentation.Interfaces;
+﻿using System;
+using Code.Infrastructure.Configs.Monsters;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,27 +11,26 @@ namespace Code.Presentation.Views
         [SerializeField, CantBeNull] private RectTransform _rectTransform = null!;
         [SerializeField, CantBeNull] private CanvasGroup _canvasGroup = null!;
         
-        private Vector3 _startPosition;
-        private Canvas _canvas;
-        private TileView _currentTile;
+        public ObjectRef ObjectRef { get; private set; }
+        public event Action<DraggableObject, PointerEventData> OnDragEnded = null!;
+        
+        private TileView _currentTile = null!;
+        private Canvas _canvas = null!;
 
-        private string _unitId = "";
-        public string UnitId => _unitId;
-
-        public void Init(TileView tile, Canvas canvas, GridManager gridManager, string unitId)
+        public void Init(TileView tile, Canvas canvas, ObjectRef objectId)
         {
-            _unitId = unitId;
             _currentTile = tile;
             _canvas = canvas;
-            transform.localPosition = Vector2.zero;
+            ObjectRef = objectId;
+
+            MoveToTile(tile);
             tile.SetObject(this);
         }
-
+        
         public void OnBeginDrag(PointerEventData eventData)
         {
-            _startPosition = transform.localPosition;
-            transform.SetParent(_canvas.transform);
             _canvasGroup.blocksRaycasts = false;
+            transform.SetParent(_canvas.transform);
             _currentTile.ClearObject();
         }
 
@@ -43,24 +42,20 @@ namespace Code.Presentation.Views
         public void OnEndDrag(PointerEventData eventData)
         {
             _canvasGroup.blocksRaycasts = true;
+            OnDragEnded?.Invoke(this, eventData);
+        }
 
-            var pointerTarget = eventData.pointerEnter;
-            var targetTile = pointerTarget != null && pointerTarget.TryGetComponent<IDragTarget>(out var dragTarget)
-                ? dragTarget.GetTile()
-                : null;
-            if (targetTile != null && !targetTile.IsOccupied)
-            {
-                targetTile.SetObject(this);
-                _currentTile = targetTile;
-                transform.SetParent(_currentTile.transform);
-                transform.localPosition = Vector2.zero;
-            }
-            else
-            {
-                transform.SetParent(_currentTile.transform);
-                transform.localPosition = _startPosition;
-                _currentTile.SetObject(this);
-            }
+        public void MoveToTile(TileView newTile)
+        {
+            transform.SetParent(newTile.transform, false); 
+            transform.localPosition = Vector3.zero;
+            newTile.SetObject(this);
+            _currentTile = newTile;
+        }
+
+        public void ReturnToStart()
+        {
+            MoveToTile(_currentTile);
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Code.Infrastructure.Configs
 {
@@ -41,7 +40,7 @@ namespace Code.Infrastructure.Configs
     public class TileObjectData
     {
         [HideInInspector] public Vector2Int Position;
-        public string ObjectId;
+        public string ObjectId = string.Empty;
     }
     
     

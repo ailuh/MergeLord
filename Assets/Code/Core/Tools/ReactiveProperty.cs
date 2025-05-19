@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Core
+namespace Code.Core.Tools
 {
     public class ReactiveProperty<T>
     {

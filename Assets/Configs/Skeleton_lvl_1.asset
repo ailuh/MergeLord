@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1920a6b0deba4544b51a8df4356bc57, type: 3}
-  m_Name: BaseMonster
+  m_Name: Skeleton_lvl_1
   m_EditorClassIdentifier: 
-  _id: 1
-  _objectPrefab: {fileID: 5432978670167957563, guid: ea4bfc2fcdd58484aa1a3f96c3ee27d3, type: 3}
-  _baseLevel: 1
-  _nextLevelUnit: {fileID: 0}
+  _id: 2
+  _objectPrefab: {fileID: 5432978670167957563, guid: 28ad3939a8aae4a45808a3cbef14b0e7, type: 3}
+  _baseLevel: 2
+  _nextLevelObjectLevelObject: {fileID: 0}

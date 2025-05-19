@@ -1,21 +1,40 @@
+using System;
 using Code.Presentation.Interfaces;
+using Code.Utils;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Code.Presentation.Views
 {
-    public class TileView : MonoBehaviour, IDragTarget
+    public class TileView : MonoBehaviour, IDragTarget, IPointerClickHandler
     {
-        private Vector2Int _gridPosition;
-        private DraggableObject? _contained;
+        [SerializeField, CantBeNull] private Sprite _tileSpriteLight = null!;
+        [SerializeField, CantBeNull] private Sprite _tileSpriteDark = null!;
+        [SerializeField, CantBeNull] private Image _tileImage = null!;
 
-        public Vector2Int GridPosition => _gridPosition;
+        private DraggableObject? _contained;
+        private Action<TileView>? _clickCallback;
+        public Vector2Int GridPosition { get; private set; }
+
+        public void InitializeTile(bool isDark, Action<TileView> callback)
+        {
+            _tileImage.sprite = isDark ? _tileSpriteDark : _tileSpriteLight;
+            _clickCallback = callback;
+            
+        }
+
         public bool IsOccupied => _contained != null;
 
-        public void SetGridPosition(Vector2Int pos) => _gridPosition = pos;
+        public void SetGridPosition(Vector2Int pos) => GridPosition = pos;
 
         public void SetObject(DraggableObject obj) => _contained = obj;
         public void ClearObject() => _contained = null;
-        public DraggableObject? GetObject() => _contained;
+        public DraggableObject? TryGetObject() => _contained;
         public TileView GetTile() => this;
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            _clickCallback?.Invoke(this);
+        }
     }
 }

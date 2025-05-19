@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5432978670167957563}
   - component: {fileID: -6187184216486456766}
   m_Layer: 5
-  m_Name: Skeleton
+  m_Name: Skeleton_lvl_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

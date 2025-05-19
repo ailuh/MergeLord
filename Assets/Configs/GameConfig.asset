@@ -35,9 +35,9 @@ MonoBehaviour:
   - Position: {x: 0, y: 3}
     ObjectId: 
   - Position: {x: 1, y: 3}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 2, y: 3}
-    ObjectId: 
+    ObjectId: 2
   - Position: {x: 0, y: 4}
     ObjectId: 
   - Position: {x: 1, y: 4}

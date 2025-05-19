@@ -88,3 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93fc37a05a021484b958b0cc0fad5e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileSpriteLight: {fileID: -5376145547440175334, guid: 5a403fd509dcb0e458e2bf17a774c809, type: 3}
+  _tileSpriteDark: {fileID: -8578810023014633177, guid: 1ee5709059549ea49aab7b0f98dd3952, type: 3}
+  _tileImage: {fileID: 6693888696052929939}
