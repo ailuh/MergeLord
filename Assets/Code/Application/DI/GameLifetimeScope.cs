@@ -5,6 +5,7 @@ using Code.Application.Managers;
 using Code.Domain.Services;
 using Code.Infrastructure.Configs;
 using Code.Infrastructure.Configs.Monsters;
+using Code.Presentation.UI;
 using Code.Utils;
 using UnityEngine;
 using VContainer;
@@ -18,6 +19,7 @@ namespace Code.Application.DI
         [SerializeField, CantBeNull] private Canvas _canvas = null!;
         [SerializeField, CantBeNull] private GridManager _gridManager = null!;
         [SerializeField, CantBeNull] private GameMessageService _messageService = null!;
+        [SerializeField, CantBeNull] private PopupManager _popupManager = null!;
 
         [Header("Prefabs")]
         [SerializeField, CantBeNull] private GridObjectCatalog _draggablePrefab = null!;
@@ -33,6 +35,7 @@ namespace Code.Application.DI
             builder.RegisterInstance(_draggablePrefab);
             
             builder.RegisterComponent<IGameMessageService>(_messageService);
+            builder.RegisterComponent(_popupManager);
 
             builder.Register<DragDropManager>(Lifetime.Singleton);
             builder.Register<MergeService>(Lifetime.Singleton);

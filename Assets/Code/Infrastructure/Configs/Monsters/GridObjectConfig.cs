@@ -2,7 +2,6 @@ using System;
 using Code.Presentation.Views;
 using Code.Utils;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Code.Infrastructure.Configs.Monsters
 {
@@ -11,25 +10,37 @@ namespace Code.Infrastructure.Configs.Monsters
     {
         [SerializeField, CantBeNull] private ObjectRef _objectRef;
         [SerializeField, CantBeNull] private DraggableObject _objectPrefab = null!;
-        [SerializeField, CantBeNull] private int _baseLevel;
+        [SerializeField, CantBeNull] private GridObjectConfig? _rootLevelObject;
         [SerializeField] private GridObjectConfig? _nextLevelObjectLevelObject;
         
         public ObjectRef ObjectRef => _objectRef;
         public DraggableObject ObjectPrefab => _objectPrefab;
-        public int BaseLevel => _baseLevel;
         public GridObjectConfig? NextLevelObject => _nextLevelObjectLevelObject;
     }
     
     [Serializable]
     public struct ObjectRef
     {
-        public string Id;
         [TextArea] public string Description;
-
-        public ObjectRef(string id, string description)
+        public string Id;
+        public GridObjectConfig RootLevelObject;
+        public Sprite Sprite;
+        public int GeneratedMana;
+        public int BaseLevel;
+        public ObjectRef(
+            string id, 
+            string description, 
+            GridObjectConfig rootLevelObject, 
+            Sprite sprite,
+            int generatedMana,
+            int baseLevel)
         {
             Id = id;
             Description = description;
+            RootLevelObject = rootLevelObject;
+            Sprite = sprite;
+            GeneratedMana = generatedMana;
+            BaseLevel = baseLevel;
         }
 
         public override string ToString() => Description;

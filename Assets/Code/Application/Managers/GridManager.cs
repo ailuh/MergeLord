@@ -37,7 +37,7 @@ namespace Code.Application.Managers
             var obj = tile.TryGetObject();
             if (obj != null)
             {
-                _gameMessageService.ShowMessage(obj.ObjectRef.Description, true);
+                _gameMessageService.ShowMessage(obj.ObjectRef.Description, true, obj.ObjectRef);
             }
             else
             {
