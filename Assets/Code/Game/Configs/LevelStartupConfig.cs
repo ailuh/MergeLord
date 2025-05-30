@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Code.Game.Configs.Quests;
 using Code.Game.Enums;
 using UnityEngine;
 
@@ -12,10 +13,13 @@ namespace Code.Game.Configs
         [SerializeField] private List<TileObjectData> _tiles = new();
         [SerializeField] private bool _useSaveData = true;
         [SerializeField] private List<DefaultEnergyEntry> _defaultEnergy;
+        [SerializeField] private QuestCatalog _questCatalog;
         public List<DefaultEnergyEntry> DefaultEnergy => _defaultEnergy;
         public List<TileObjectData> Tiles => _tiles;
         public Vector2Int GridSize => _gridSize;
         public bool UseSaveData => _useSaveData;
+        public QuestCatalog QuestCatalog => _questCatalog;
+
         
 #if UNITY_EDITOR
         [ContextMenu("Generate Grid")]

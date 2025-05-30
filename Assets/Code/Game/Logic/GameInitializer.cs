@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using Code.Game.Configs;
 using Code.Game.Configs.Monsters;
+using Code.Game.Configs.Quests;
 using Code.Game.Model;
+using Code.Game.Model.Quests;
+using Code.Game.Model.Rewards;
 using Code.Game.State;
 using Code.Game.Systems.Interfaces;
 using Code.Game.Systems.Managers;
 using Code.Game.Systems.Services;
+using Code.UI.ViewModels;
 using Code.UI.Views;
 using UnityEngine;
 using VContainer;
@@ -28,6 +32,12 @@ namespace Code.Game.Logic
         [Inject] private readonly CurrencyModel _currencyModel = null!;
         [Inject] private readonly GameState _state = null!;
         [Inject] private readonly EnergyView[] _energyViews = null!;
+        [Inject] private readonly IQuestEventBus _eventBus = null!;
+        [Inject] private readonly MainScreenView _mainScreenView = null!;
+        [Inject] private readonly MainScreenViewModel _mainScreenViewModel = null!;
+        [Inject] private readonly RewardBufferModel _rewardBufferModel = null!;
+        [Inject] private readonly RewardBufferView _rewardBufferView = null!;
+
 
         public void Start()
         {
@@ -48,6 +58,13 @@ namespace Code.Game.Logic
                 }
                 else
                 {
+                    var questModel = new QuestModel(_state, _startupConfig.QuestCatalog, _eventBus, _rewardBufferModel);
+                    _rewardBufferView.Init(_rewardBufferModel, _gridManager, _gameMessageService);
+                    var activeQuests = questModel.GetActiveRegularQuests(4);
+                    var questViewModel = new QuestViewModel(questModel, activeQuests);
+
+                    _mainScreenView.Init(questViewModel, _mainScreenViewModel);
+                    
                     tilesToUse = _startupConfig.Tiles;
                     _energyModel.InitFromDefault(_startupConfig);
                     Debug.Log("Initialized game from startup config.");
@@ -55,15 +72,24 @@ namespace Code.Game.Logic
             }
             else
             {
+                var questModel = new QuestModel(_state, _startupConfig.QuestCatalog, _eventBus, _rewardBufferModel);
+                _rewardBufferView.Init(_rewardBufferModel, _gridManager, _gameMessageService);
+                var activeQuests = questModel.GetActiveRegularQuests(4);
+                var questViewModel = new QuestViewModel(questModel, activeQuests);
+
+                _mainScreenView.Init(questViewModel, _mainScreenViewModel);
+               
                 tilesToUse = _startupConfig.Tiles;
                 _energyModel.InitFromDefault(_startupConfig);
                 Debug.Log("Startup config used explicitly. Save ignored.");
+                
             }
             foreach (var view in _energyViews)
             {
                 var viewModel = _energyViewModelFactory.Create(view.Type);
                 view.Init(viewModel);
             }
+            _gridManager.Init(_draggableFactory, _catalog, _dragDropService);
             _gridManager.InitializeGrid(tilesToUse, _gameMessageService);
 
             foreach (var tileData in tilesToUse)

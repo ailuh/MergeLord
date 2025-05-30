@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using Code.Common.EditorUtils;
 using Code.Game.Configs;
+using Code.Game.Configs.Monsters;
 using Code.Game.Logic;
+using Code.Game.Model.Rewards;
 using Code.Game.Systems.Interfaces;
+using Code.Game.Systems.Services;
 using Code.UI.Views;
 using UnityEngine;
 
@@ -15,6 +18,16 @@ namespace Code.Game.Systems.Managers
         public event Action OnGridChanged;
         private readonly Dictionary<Vector2Int, TileView> _tiles = new();
         private IGameMessageService _gameMessageService = null!;
+        private DraggableFactory _draggableFactory;
+        private GridObjectCatalog _catalog;
+        private DragDropService _dragDropService;
+
+        public void Init(DraggableFactory factory, GridObjectCatalog catalog, DragDropService dragDropService)
+        {
+            _draggableFactory = factory;
+            _catalog = catalog;
+            _dragDropService = dragDropService;
+        }
         
         public void InitializeGrid(IEnumerable<TileObjectData> tileObjectsData, IGameMessageService gameMessageService)
         {
@@ -30,7 +43,7 @@ namespace Code.Game.Systems.Managers
 
             _gameMessageService = gameMessageService;
         }
-
+        
         public TileView? GetTileAt(Vector2Int pos)
             => _tiles.TryGetValue(pos, out var tile) ? tile : null;
         
@@ -72,6 +85,48 @@ namespace Code.Game.Systems.Managers
             }
 
             return result;
+        }
+        
+        public TileView? GetFirstFreeTile()
+        {
+            foreach (var tile in _tiles.Values)
+            {
+                if (!tile.IsOccupied)
+                {
+                    return tile;
+                }
+            }
+
+            return null;
+        }
+        
+        public bool TryPlaceReward(RewardData reward)
+        {
+            var freeTile = GetFirstFreeTile();
+
+            if (freeTile == null)
+            {
+                return false;
+            }
+            var config = _catalog.GetConfig(reward.Id);
+            if (config == null)
+            {
+                return false;
+            }
+            var objectPrefab = _catalog.GetPrefab(reward.Id);
+            if (objectPrefab == null)
+            {
+                return false;
+            }
+            var obj = _draggableFactory.Create(freeTile, config.ObjectRef, objectPrefab);
+            if (obj == null)
+            {
+                return false;
+
+            }
+            freeTile.SetObject(obj);
+            _dragDropService.RegisterDraggable(obj);            
+            return true;
         }
         
         public void NotifyGridChanged()

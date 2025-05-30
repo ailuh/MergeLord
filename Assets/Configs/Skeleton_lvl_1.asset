@@ -17,7 +17,10 @@ MonoBehaviour:
     Id: 1
     RootLevelObject: {fileID: 11400000}
     Sprite: {fileID: -8264361044906388542, guid: 4e3ead816dde9044f8b2f1fe9401c533, type: 3}
-    GeneratedMana: 5
+    Energy:
+      Type: 0
+      EnergyPerTick: 10
+      TickSeconds: 30
     BaseLevel: 1
   _objectPrefab: {fileID: 5432978670167957563, guid: ea4bfc2fcdd58484aa1a3f96c3ee27d3, type: 3}
   _rootLevelObject: {fileID: 11400000}

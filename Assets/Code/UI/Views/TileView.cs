@@ -22,7 +22,6 @@ namespace Code.UI.Views
         {
             _tileImage.sprite = isDark ? _tileSpriteDark : _tileSpriteLight;
             _clickCallback = callback;
-            
         }
 
         public bool IsOccupied => _contained != null;

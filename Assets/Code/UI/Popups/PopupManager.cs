@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Code.Common.EditorUtils;
 using Code.Game.Configs.Monsters;
+using Code.UI.ViewModels;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -33,6 +34,26 @@ namespace Code.UI.Popups
             await popup.ShowAsync();
         }
 
+        public async UniTask ShowAsync(PopupType type, QuestViewModel data)
+        {
+            var popup = GetOrCreatePopup(type);
+            if (popup == null)
+            {
+                return;
+            }
+
+            if (popup is MainQuestsPopup questsPopup)
+            {
+                questsPopup.SetData(data);
+            }
+            else
+            {
+                Debug.LogWarning("Popup is not of expected type MainQuestsPopup");
+            }
+
+            await popup.ShowAsync();
+        }
+        
         public async UniTask HideAsync(PopupType type)
         {
             if (_cache.TryGetValue(type, out var popup))

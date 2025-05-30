@@ -1,5 +1,6 @@
 using Code.Game.Configs.Monsters;
 using Code.Game.Logic;
+using Code.Game.Logic.Events;
 using Code.Game.Systems.Interfaces;
 using Code.Game.Systems.Managers;
 using UnityEngine;
@@ -12,13 +13,15 @@ namespace Code.Game.Systems.Services
         private readonly DraggableFactory _factory;
         private readonly GridObjectCatalog _catalog;
         private readonly IGameMessageService _messageService;
+        private readonly IQuestEventBus _questEventBus;
         
-        public MergeService(GridManager gridManager, DraggableFactory factory, GridObjectCatalog catalog, IGameMessageService messageService)
+        public MergeService(GridManager gridManager, DraggableFactory factory, GridObjectCatalog catalog, IGameMessageService messageService, IQuestEventBus questEventBus)
         {
             _gridManager = gridManager;
             _factory = factory;
             _catalog = catalog;
             _messageService = messageService;
+            _questEventBus = questEventBus;
         }
 
         public DraggableObject? TryMerge(DraggableObject fromPosDraggableObject, Vector2Int toPos)
@@ -63,6 +66,7 @@ namespace Code.Game.Systems.Services
             Object.Destroy(toObj.gameObject);
             toTile.ClearObject();
             
+            _questEventBus.Raise(new MergeHappenedEvent(fromPosDraggableObject.ObjectRef.Id));
             var newObject = _factory.Create(toTile, config.NextLevelObject.ObjectRef, objectPrefab);
             _messageService.ShowMessage("Merge is successful!");
             _gridManager.NotifyGridChanged();

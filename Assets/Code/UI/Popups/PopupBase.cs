@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Code.Common.EditorUtils;
 using Code.Game.Configs.Monsters;
 using Code.UI.Animations;
+using Code.UI.ViewModels;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Code.UI.Popups
     {
         [SerializeField, CantBeNull] private CanvasGroup _canvasGroup;
         [SerializeField, CantBeNull] private Button _closeButton;
+        [SerializeField, CantBeNull] private Button _playAnimation;
         [SerializeField] private float _interElementDelay = 0.05f;
         [SerializeField] private float _fadeDuration = 0.3f;
         
@@ -23,9 +25,11 @@ namespace Code.UI.Popups
         private void Start()
         {
             _closeButton.onClick.AddListener(ClosePopup);
+            _playAnimation.onClick.AddListener(AnimateElementsIn);
         }
 
         public virtual void SetData(ObjectRef data) { }
+        public virtual void SetData(QuestViewModel data) { }
 
         public virtual async UniTask ShowAsync()
         {
@@ -45,7 +49,7 @@ namespace Code.UI.Popups
             await UniTask.Delay(TimeSpan.FromSeconds(_fadeDuration));
         }
         
-        private void AnimateElementsIn()
+        protected void AnimateElementsIn()
         {
             var accumulatedDelay = 0f;
             foreach (var anim in GetAnimatedElements())

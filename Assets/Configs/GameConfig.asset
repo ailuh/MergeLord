@@ -15,65 +15,65 @@ MonoBehaviour:
   _gridSize: {x: 7, y: 7}
   _tiles:
   - Position: {x: 0, y: 0}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 1, y: 0}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 2, y: 0}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 3, y: 0}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 4, y: 0}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 5, y: 0}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 6, y: 0}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 0, y: 1}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 1, y: 1}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 2, y: 1}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 3, y: 1}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 4, y: 1}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 5, y: 1}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 6, y: 1}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 0, y: 2}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 1, y: 2}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 2, y: 2}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 3, y: 2}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 4, y: 2}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 5, y: 2}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 6, y: 2}
     ObjectId: 
   - Position: {x: 0, y: 3}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 1, y: 3}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 2, y: 3}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 3, y: 3}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 4, y: 3}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 5, y: 3}
     ObjectId: 
   - Position: {x: 6, y: 3}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 0, y: 4}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 1, y: 4}
-    ObjectId: 
+    ObjectId: 1
   - Position: {x: 2, y: 4}
     ObjectId: 2
   - Position: {x: 3, y: 4}
@@ -117,3 +117,4 @@ MonoBehaviour:
   - Type: 0
     Initial: 5000
     Max: 10000
+  _questCatalog: {fileID: 11400000, guid: c7035edb9f1de984b96d5cda54a923ef, type: 2}

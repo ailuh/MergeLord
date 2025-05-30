@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b11fa5b19aeafe24fb4157dcd539cfa5, type: 3}
+  m_Name: Quest6
+  m_EditorClassIdentifier: 
+  Id: 6
+  Description: 'quest 6 '
+  Kind: 1
+  ConditionType: 0
+  ConditionTargetId: 1
+  ConditionValue: 1
+  RequiredQuestIds: []
+  NextQuests: []
+  Reward:
+    Id: 1
+    Amount: 1
+    Icon: {fileID: 8214909051368771840, guid: 6fe55884e86b4134cb47981da477cb83, type: 3}

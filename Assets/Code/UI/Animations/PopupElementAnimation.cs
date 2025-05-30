@@ -17,20 +17,19 @@ namespace Code.UI.Animations
         public virtual void Prepare()
         {
             _rect.anchoredPosition += _startOffset;
+            _rect.localScale = new Vector3(0f, 0f, 1f);
             _canvasGroup.alpha = 0;
         }
 
         public virtual void Animate(float additionalDelay = 0f)
         {
-            _rect.localScale = new Vector3(0f, 0f, 1f);
-            _canvasGroup.alpha = 0;
             var totalDelay = _delay + additionalDelay;
-
             var seq = DOTween.Sequence();
             seq.AppendInterval(totalDelay);
             seq.Append(_rect.DOScaleX(1f, _duration).SetEase(_ease));
             seq.Join(_rect.DOScaleY(1f, _duration).SetEase(_ease));
             seq.Join(_canvasGroup.DOFade(1f, _duration));
+            seq.Play();
         }
     }
 }
