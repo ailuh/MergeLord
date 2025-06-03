@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &880759392850181261
+--- !u!1 &7624688009769472198
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4368747118635892167}
-  - component: {fileID: 5980833257392748241}
-  - component: {fileID: 6693888696052929939}
-  - component: {fileID: -2543627273753067061}
+  - component: {fileID: 8131519181351056961}
+  - component: {fileID: 839223804601110344}
+  - component: {fileID: 3390785871367835670}
+  - component: {fileID: 5432978670167957563}
+  - component: {fileID: -6187184216486456766}
   m_Layer: 5
-  m_Name: Tile
+  m_Name: Elf_lvl_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &4368747118635892167
+--- !u!224 &8131519181351056961
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880759392850181261}
+  m_GameObject: {fileID: 7624688009769472198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,26 +34,26 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 48, y: 68}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5980833257392748241
+--- !u!222 &839223804601110344
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880759392850181261}
+  m_GameObject: {fileID: 7624688009769472198}
   m_CullTransparentMesh: 1
---- !u!114 &6693888696052929939
+--- !u!114 &3390785871367835670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880759392850181261}
+  m_GameObject: {fileID: 7624688009769472198}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5623194428626525839, guid: 48bd17aef50b6374cabcfd184cb29869, type: 3}
+  m_Sprite: {fileID: -4594307042656651422, guid: d2338f38102275245bb9b341ab52431f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76,18 +77,29 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-2543627273753067061
+--- !u!114 &5432978670167957563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880759392850181261}
+  m_GameObject: {fileID: 7624688009769472198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93fc37a05a021484b958b0cc0fad5e07, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e1e5ae3ce2e4ff8bd4a6d42ea80b85a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileSpriteLight: {fileID: -269119505794358881, guid: 1c58c141a2fa6864e9da4e9cc3b5a137, type: 3}
-  _tileSpriteDark: {fileID: 337539839404632239, guid: 78f55ad66ac523746ba4dcc356eb2642, type: 3}
-  _tileImage: {fileID: 6693888696052929939}
+  _rectTransform: {fileID: 8131519181351056961}
+  _canvasGroup: {fileID: -6187184216486456766}
+--- !u!225 &-6187184216486456766
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7624688009769472198}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

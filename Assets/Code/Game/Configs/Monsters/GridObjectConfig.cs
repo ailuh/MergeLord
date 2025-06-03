@@ -11,7 +11,6 @@ namespace Code.Game.Configs.Monsters
     {
         [SerializeField, CantBeNull] private ObjectRef _objectRef;
         [SerializeField, CantBeNull] private DraggableObject _objectPrefab = null!;
-        [SerializeField, CantBeNull] private GridObjectConfig? _rootLevelObject;
         [SerializeField] private GridObjectConfig? _nextLevelObjectLevelObject;
         
         public ObjectRef ObjectRef => _objectRef;

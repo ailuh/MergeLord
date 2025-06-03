@@ -1,103 +1,83 @@
 using System;
 using System.Collections.Generic;
+using Code.Common.Reactive;
 using Code.Game.Configs;
 using Code.Game.Configs.DataModels;
-using Code.Game.Configs.Monsters;
 using Code.Game.Enums;
 using Code.Game.State;
+using Code.Game.Systems.Services;
 
 namespace Code.Game.Model
 {
     public class EnergyModel
     {
         private readonly GameState _state;
-        private readonly GridObjectCatalog _catalog;
+        private TileService _tileService;
         private DateTime _lastTickTime;
+        public event Action<EnergyType, int> OnEnergyGained;
 
-        public EnergyModel(GameState state, GridObjectCatalog catalog)
+        public EnergyModel(GameState state)
         {
             _state = state;
-            _catalog = catalog;
             _lastTickTime = DateTime.UtcNow;
         }
 
-        public void InitFromDefault(LevelStartupConfig config)
+        public void InitTileService(TileService tileService)
         {
-            foreach (var entry in config.DefaultEnergy)
+            _tileService = tileService;
+        }
+        
+        public void InitFromDefault(LevelStartupConfig startup)
+        {
+            _state.Energy.Clear();
+            _state.MaxEnergy.Clear();
+
+            foreach (var entry in startup.DefaultEnergy)
             {
-                _state.Energy[entry.Type].Value = entry.Initial;
+                _state.Energy[entry.Type] = new ReactiveProperty<int>(entry.Initial);
                 _state.MaxEnergy[entry.Type] = entry.Max;
             }
         }
 
-        public void LoadFromSave(Dictionary<EnergyType, EnergyValue> savedEnergy)
+        public void LoadFromSave(Dictionary<EnergyType, EnergyValue> savedValues)
         {
-            foreach (var pair in savedEnergy)
+            foreach (var pair in savedValues)
             {
-                _state.Energy[pair.Key].Value = pair.Value.Current;
-                _state.MaxEnergy[pair.Key] = pair.Value.Max;
+                _state.Energy[pair.Key] = new ReactiveProperty<int>(pair.Value.Current);
             }
         }
 
-        public void ApplyOfflineProgress(DateTime lastSave, DateTime now)
+        public void ApplyOfflineProgress(DateTime lastSaveUtc, DateTime now)
         {
-            var secondsPassed = (now - lastSave).TotalSeconds;
+            var delta = (now - lastSaveUtc).TotalSeconds;
 
-            foreach (var tile in _state.Tiles.Values)
+            foreach (var tile in _tileService.GetAllTiles())
             {
-                var config = _catalog.GetConfig(tile.ObjectId);
-                if (config == null || config.ObjectRef.Energy.TickSeconds <= 0)
-                {
-                    continue;
-                }
-
-                var ticks = (int)(secondsPassed / config.ObjectRef.Energy.TickSeconds);
-                var total = ticks * config.ObjectRef.Energy.EnergyPerTick;
-
-                AddEnergy(config.ObjectRef.Energy.Type, total);
+                tile.Tick(delta, AddEnergy);
             }
         }
-
+        
         public void TickOnlineGeneration()
         {
             var now = DateTime.UtcNow;
             var delta = (now - _lastTickTime).TotalSeconds;
-            if (delta < 1) return;
+            _lastTickTime = now;
+
+            if (delta <= 0) return;
 
             foreach (var tile in _state.Tiles.Values)
             {
-                var config = _catalog.GetConfig(tile.ObjectId);
-                if (config == null || config.ObjectRef.Energy.TickSeconds <= 0)
-                {
-                    continue;
-                }
-
-                if (delta >= config.ObjectRef.Energy.TickSeconds)
-                {
-                    AddEnergy(config.ObjectRef.Energy.Type, config.ObjectRef.Energy.EnergyPerTick);
-                }
+                tile.Tick(delta, AddEnergy);
             }
-
-            _lastTickTime = now;
         }
 
         private void AddEnergy(EnergyType type, int amount)
         {
-            var energy = _state.Energy[type];
+            if (!_state.Energy.TryGetValue(type, out var energy)) return;
+
             var max = _state.MaxEnergy.TryGetValue(type, out var maxVal) ? maxVal : int.MaxValue;
             energy.Value = Math.Min(energy.Value + amount, max);
-        }
-
-        public bool TrySpendEnergy(EnergyType type, int amount)
-        {
-            var current = _state.Energy[type].Value;
-            if (current < amount)
-            {
-                return false;
-            }
-
-            _state.Energy[type].Value -= amount;
-            return true;
+            
         }
     }
 }

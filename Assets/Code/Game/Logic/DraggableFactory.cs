@@ -1,4 +1,5 @@
 ﻿using Code.Game.Configs.Monsters;
+using Code.Game.State;
 using Code.Game.Systems.Managers;
 using Code.UI.Views;
 using UnityEngine;
@@ -9,23 +10,31 @@ namespace Code.Game.Logic
     {
         private readonly Canvas _canvas;
         private readonly GridManager _gridManager;
+        private readonly GameState _gameState;
 
-        public DraggableFactory(Canvas canvas, GridManager gridManager)
+        public DraggableFactory(Canvas canvas, GridManager gridManager, GameState gameState)
         {
             _canvas = canvas;
             _gridManager = gridManager;
+            _gameState = gameState;
         }
 
-        public DraggableObject? Create(TileView tile, ObjectRef objectRef, DraggableObject draggablePrefab)
+        public DraggableObject? Create(TileView tileView, ObjectRef objectRef, DraggableObject draggablePrefab)
         {
-            var draggableObject = Object.Instantiate(draggablePrefab, tile.transform);
-            if (draggableObject == null)
+            if (!_gameState.Tiles.TryGetValue(tileView.GridPosition, out var tileModel))
             {
-                Debug.LogError($"[DraggableFactory] No prefab found for objectId: {objectRef.Id}");
+                Debug.LogError("[DraggableFactory] Tile model not found for position: " + tileView.GridPosition);
                 return null;
             }
-            
-            draggableObject.Init(tile, _canvas, objectRef, _gridManager);
+
+            var draggableObject = Object.Instantiate(draggablePrefab, tileView.transform);
+            if (draggableObject == null)
+            {
+                Debug.LogError("[DraggableFactory] Failed to instantiate prefab for objectId: " + objectRef.Id);
+                return null;
+            }
+
+            draggableObject.Init(tileModel, _canvas, objectRef, _gridManager);
             return draggableObject;
         }
     }

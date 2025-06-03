@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5432978670167957563}
   - component: {fileID: -6187184216486456766}
   m_Layer: 5
-  m_Name: Skeleton_lvl_2
+  m_Name: Elf_lvl_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7624688009769472198}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 60, y: 60}
+  m_SizeDelta: {x: 48, y: 68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &839223804601110344
 CanvasRenderer:
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8264361044906388542, guid: 9a35fad363ec1a647aef53cfd7e61e15, type: 3}
+  m_Sprite: {fileID: -8221672207578928855, guid: e30a0f46e479a2b42970c9447543444d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

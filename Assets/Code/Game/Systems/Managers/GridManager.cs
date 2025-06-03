@@ -21,31 +21,31 @@ namespace Code.Game.Systems.Managers
         private DraggableFactory _draggableFactory;
         private GridObjectCatalog _catalog;
         private DragDropService _dragDropService;
+        private TileService _tileService;
 
-        public void Init(DraggableFactory factory, GridObjectCatalog catalog, DragDropService dragDropService)
+        public void Init(DraggableFactory factory, GridObjectCatalog catalog, DragDropService dragDropService, TileService tileService)
         {
             _draggableFactory = factory;
             _catalog = catalog;
             _dragDropService = dragDropService;
+            _tileService = tileService;
         }
-        
+            
         public void InitializeGrid(IEnumerable<TileObjectData> tileObjectsData, IGameMessageService gameMessageService)
         {
-            foreach (var tileObject in tileObjectsData)
+            _tileService.InitializeTiles(tileObjectsData);
+
+            foreach (var tileModel in _tileService.GetAllTiles())
             {
-                var pos = new Vector2Int(tileObject.Position.x, tileObject.Position.y);
+                var pos = tileModel.Position;
                 var tile = Instantiate(_tilePrefab, transform);
                 var isDark = (pos.x + pos.y) % 2 != 0;
-                tile.InitializeTile(isDark, OnTileClicked);
-                tile.SetGridPosition(pos);
+                tile.InitializeTile(tileModel, isDark, OnTileClicked);
                 _tiles[pos] = tile;
             }
 
             _gameMessageService = gameMessageService;
         }
-        
-        public TileView? GetTileAt(Vector2Int pos)
-            => _tiles.TryGetValue(pos, out var tile) ? tile : null;
         
         private void OnTileClicked(TileView tile)
         {
@@ -86,8 +86,8 @@ namespace Code.Game.Systems.Managers
 
             return result;
         }
-        
-        public TileView? GetFirstFreeTile()
+
+        private TileView? GetFirstFreeTile()
         {
             foreach (var tile in _tiles.Values)
             {

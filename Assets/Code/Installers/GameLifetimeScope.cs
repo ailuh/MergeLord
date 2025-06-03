@@ -67,6 +67,7 @@ namespace Code.Installers
             builder.Register<DragDropService>(Lifetime.Singleton);
             builder.Register<MergeService>(Lifetime.Singleton);
             builder.Register<SaveLoadService>(Lifetime.Singleton);
+            builder.Register<TileService>(Lifetime.Singleton);
             builder.Register<AutoSaveService>(Lifetime.Singleton).As<IStartable>();
             builder.Register<EnergyTickService>(Lifetime.Singleton).As<IStartable>();
             builder.Register<QuestEventBus>(Lifetime.Singleton).As<IQuestEventBus>();

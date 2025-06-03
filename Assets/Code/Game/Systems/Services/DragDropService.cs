@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Code.Game.Logic;
 using Code.Game.Logic.Interfaces;
 using UnityEngine;
@@ -9,11 +8,13 @@ namespace Code.Game.Systems.Services
 {
     public class DragDropService
     {
-        private readonly MergeService _merge;
+        private readonly MergeService _mergeService;
+        private readonly TileService _tileService;
 
-        public DragDropService(MergeService merge)
+        public DragDropService(MergeService mergeService, TileService tileService)
         {
-            _merge = merge;
+            _mergeService = mergeService;
+            _tileService = tileService;
         }
 
         public void RegisterDraggable(DraggableObject obj)
@@ -30,34 +31,52 @@ namespace Code.Game.Systems.Services
                 return;
             }
 
-            var targetTile = dragTarget.GetTile();
-            if (targetTile == null)
+            var targetTileView = dragTarget.GetTile();
+            if (targetTileView == null)
             {
                 dragged.ReturnToStart();
                 return;
             }
 
-            if (!targetTile.IsOccupied)
+            var targetModel = _tileService.GetTile(targetTileView.GridPosition);
+            if (targetModel == null)
             {
-                dragged.MoveToTile(targetTile);
+                dragged.ReturnToStart();
+                return;
+            }
+
+            if (!targetModel.IsOccupied)
+            {
+                dragged.MoveToTile(targetModel);
+                _tileService.SetObject(targetModel.Position, dragged.ObjectRef.Id);
             }
             else
             {
-                var merged = _merge.TryMerge(dragged, targetTile.GridPosition);
+                var merged = _mergeService.TryMerge(dragged, targetModel.Position);
                 if (merged != null)
                 {
                     RegisterDraggable(merged);
                     return;
                 }
+
                 dragged.ReturnToStart();
             }
         }
-        
+
         private GameObject? FindTargetUnderPointer(PointerEventData eventData)
         {
             var results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, results);
-            return (from result in results where result.gameObject.TryGetComponent<IDragTarget>(out _) select result.gameObject).FirstOrDefault();
+
+            foreach (var result in results)
+            {
+                if (result.gameObject.TryGetComponent<IDragTarget>(out _))
+                {
+                    return result.gameObject;
+                }
+            }
+
+            return null;
         }
     }
 }

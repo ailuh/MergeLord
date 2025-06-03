@@ -1,8 +1,8 @@
 ﻿using System;
 using Code.Common.EditorUtils;
 using Code.Game.Configs.Monsters;
+using Code.Game.Model;
 using Code.Game.Systems.Managers;
-using Code.UI.Views;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,30 +12,30 @@ namespace Code.Game.Logic
     {
         [SerializeField, CantBeNull] private RectTransform _rectTransform = null!;
         [SerializeField, CantBeNull] private CanvasGroup _canvasGroup = null!;
-        
+
         public ObjectRef ObjectRef { get; private set; }
-        public event Action<DraggableObject, PointerEventData> OnDragEnded = null!;
-        
-        private TileView _currentTile = null!;
+
+        public event Action<DraggableObject, PointerEventData>? OnDragEnded;
+
+        private TileModel _currentModel = null!;
         private Canvas _canvas = null!;
-        private GridManager _gridManager;
-        
-        public void Init(TileView tile, Canvas canvas, ObjectRef objectId, GridManager gridManager)
+        private GridManager _gridManager = null!;
+
+        public void Init(TileModel tileModel, Canvas canvas, ObjectRef objectRef, GridManager gridManager)
         {
-            _currentTile = tile;
+            _currentModel = tileModel;
             _canvas = canvas;
             _gridManager = gridManager;
-            ObjectRef = objectId;
+            ObjectRef = objectRef;
 
-            MoveToTile(tile, true);
-            tile.SetObject(this);
+            MoveToTile(tileModel, true);
         }
-        
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             _canvasGroup.blocksRaycasts = false;
             transform.SetParent(_canvas.transform);
-            _currentTile.ClearObject();
+            _currentModel.ClearObject();
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -49,12 +49,19 @@ namespace Code.Game.Logic
             OnDragEnded?.Invoke(this, eventData);
         }
 
-        public void MoveToTile(TileView newTile, bool isInit = false)
+        public void MoveToTile(TileModel newTileModel, bool isInit = false)
         {
-            transform.SetParent(newTile.transform, false); 
-            transform.localPosition = Vector3.zero;
-            newTile.SetObject(this);
-            _currentTile = newTile;
+            var view = newTileModel.GetView();
+            if (view != null)
+            {
+                transform.SetParent(view.transform, false);
+                transform.localPosition = Vector3.zero;
+            }
+
+            _currentModel.ClearObject();
+            newTileModel.SetObject(this);
+            _currentModel = newTileModel;
+
             if (!isInit)
             {
                 _gridManager.NotifyGridChanged();
@@ -63,7 +70,7 @@ namespace Code.Game.Logic
 
         public void ReturnToStart()
         {
-            MoveToTile(_currentTile);
+            MoveToTile(_currentModel);
         }
     }
 }

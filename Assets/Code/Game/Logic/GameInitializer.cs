@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Code.Game.Configs;
 using Code.Game.Configs.Monsters;
-using Code.Game.Configs.Quests;
 using Code.Game.Model;
 using Code.Game.Model.Quests;
 using Code.Game.Model.Rewards;
@@ -37,6 +36,7 @@ namespace Code.Game.Logic
         [Inject] private readonly MainScreenViewModel _mainScreenViewModel = null!;
         [Inject] private readonly RewardBufferModel _rewardBufferModel = null!;
         [Inject] private readonly RewardBufferView _rewardBufferView = null!;
+        [Inject] private readonly TileService _tileService = null!;
 
 
         public void Start()
@@ -50,6 +50,7 @@ namespace Code.Game.Logic
                 if (loadData != null)
                 {
                     tilesToUse = loadData.Grid;
+                    _energyModel.InitTileService(_tileService);
                     _energyModel.LoadFromSave(loadData.Energy);
                     _energyModel.ApplyOfflineProgress(loadData.LastSaveUtc, DateTime.UtcNow);
                     _state.Coins.Value = loadData.Coins;
@@ -66,6 +67,7 @@ namespace Code.Game.Logic
                     _mainScreenView.Init(questViewModel, _mainScreenViewModel);
                     
                     tilesToUse = _startupConfig.Tiles;
+                    _energyModel.InitTileService(_tileService);
                     _energyModel.InitFromDefault(_startupConfig);
                     Debug.Log("Initialized game from startup config.");
                 }
@@ -80,6 +82,7 @@ namespace Code.Game.Logic
                 _mainScreenView.Init(questViewModel, _mainScreenViewModel);
                
                 tilesToUse = _startupConfig.Tiles;
+                _energyModel.InitTileService(_tileService);
                 _energyModel.InitFromDefault(_startupConfig);
                 Debug.Log("Startup config used explicitly. Save ignored.");
                 
@@ -89,15 +92,14 @@ namespace Code.Game.Logic
                 var viewModel = _energyViewModelFactory.Create(view.Type);
                 view.Init(viewModel);
             }
-            _gridManager.Init(_draggableFactory, _catalog, _dragDropService);
+            _gridManager.Init(_draggableFactory, _catalog, _dragDropService, _tileService);
             _gridManager.InitializeGrid(tilesToUse, _gameMessageService);
-
             foreach (var tileData in tilesToUse)
             {
                 if (string.IsNullOrEmpty(tileData.ObjectId))
                     continue;
 
-                var tile = _gridManager.GetTileAt(tileData.Position);
+                var tile = _tileService.GetTile(tileData.Position);
                 if (tile == null || tile.IsOccupied)
                     continue;
 
@@ -109,7 +111,7 @@ namespace Code.Game.Logic
                 if (prefab == null)
                     continue;
 
-                var draggable = _draggableFactory.Create(tile, config.ObjectRef, prefab);
+                var draggable = _draggableFactory.Create(tile.GetView(), config.ObjectRef, prefab);
                 if (draggable == null)
                     continue;
 
