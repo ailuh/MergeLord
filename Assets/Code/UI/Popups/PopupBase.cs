@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Code.Common.EditorUtils;
+using Code.Game.Configs.Buildings;
 using Code.Game.Configs.Monsters;
 using Code.UI.Animations;
 using Code.UI.ViewModels;
@@ -15,22 +16,24 @@ namespace Code.UI.Popups
     {
         [SerializeField, CantBeNull] private CanvasGroup _canvasGroup;
         [SerializeField, CantBeNull] private Button _closeButton;
-        [SerializeField, CantBeNull] private Button _playAnimation;
+        [SerializeField] private Button _playAnimation;
         [SerializeField] private float _interElementDelay = 0.05f;
         [SerializeField] private float _fadeDuration = 0.3f;
-        
+        public CanvasGroup CanvasGroup => _canvasGroup;
         public abstract PopupType Type { get; }
         protected abstract List<PopupElementAnimation> GetAnimatedElements();
 
         private void Start()
         {
             _closeButton.onClick.AddListener(ClosePopup);
-            _playAnimation.onClick.AddListener(AnimateElementsIn);
+            if (_playAnimation != null)
+            {
+                _playAnimation.onClick.AddListener(AnimateElementsIn);
+            }
         }
 
-        public virtual void SetData(ObjectRef data) { }
-        public virtual void SetData(QuestViewModel data) { }
-
+        public virtual void SetData(IPopupData popupData) { }
+        
         public virtual async UniTask ShowAsync()
         {
             gameObject.SetActive(true);

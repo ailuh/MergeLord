@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Code.Common.EditorUtils;
-using Code.Game.Configs.Monsters;
 using Code.UI.Animations;
+using Code.UI.Views;
+using Configs.Objects;
 using TMPro;
 using UnityEngine;
 
@@ -14,40 +15,44 @@ namespace Code.UI.Popups
         [SerializeField, CantBeNull] private TextMeshProUGUI _titleText;
         [SerializeField, CantBeNull] private TextMeshProUGUI _descText;
         [SerializeField, CantBeNull] private Transform _objectInfoListParent;
-        [SerializeField, CantBeNull] private ObjectInfoElement _elementPrefab;
+        [SerializeField, CantBeNull] private SmallObjectCardView _elementPrefab;
         [SerializeField] private List<PopupElementAnimation> _animatedElements;
         
         protected override List<PopupElementAnimation> GetAnimatedElements() => _animatedElements;
-        private readonly List<ObjectInfoElement> _cache = new();
+        private readonly List<SmallObjectCardView> _cache = new();
         
-        public override void SetData(ObjectRef data)
+        public override void SetData(IPopupData popupData)
         {
+            if (popupData is not UnitInfoPopupData data || data.Provider == null)
+                return;
+
+            var chain = data.Provider.GetUpgradeChain();
+            if (chain.Count == 0)
+                return;
+
             _animatedElements.Clear();
-            _titleText.text = data.Id;
-            _descText.text = data.Description;
-            ShowChain(data);
+            _titleText.text = chain[0].Id;
+            _descText.text = chain[0].Description;
+
+            ShowChain(chain);
         }
 
-        private void ShowChain(ObjectRef startConfig)
+        private void ShowChain(List<GridObjectConfigBase> chain)
         {
             ClearChain();
-            var current = startConfig.RootLevelObject;
 
-            while (current != null)
+            foreach (var config in chain)
             {
-                var objRef = current.ObjectRef;
-
                 var element = GetOrCreateElement();
-                element.SetData(objRef);
-                element.gameObject.SetActive(true);
+                element.SetData(config);
                 element.transform.SetParent(_objectInfoListParent, false);
-                current = current.NextLevelObject;
+                element.gameObject.SetActive(true);
             }
         }
-        
-        private ObjectInfoElement GetOrCreateElement()
+
+        private SmallObjectCardView GetOrCreateElement()
         {
-            foreach (var cached in _cache.Where(cached => !cached.gameObject.activeSelf))
+            foreach (var cached in _cache.Where(e => !e.gameObject.activeSelf))
             {
                 _animatedElements.Add(cached);
                 return cached;
@@ -66,7 +71,7 @@ namespace Code.UI.Popups
                 element.gameObject.SetActive(false);
             }
         }
-        
+
         public override PopupType Type { get; }
     }
 }

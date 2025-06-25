@@ -16,10 +16,14 @@ namespace Code.UI.Popups
         protected override List<PopupElementAnimation> GetAnimatedElements() => _animatedElements;
         private QuestViewModel _viewModel;
 
-        public override void SetData(QuestViewModel viewModel)
+        public override void SetData(IPopupData popupData)
         {
+            if (popupData is not MainQuestsPopupData mainQuestsPopupData)
+            {
+                return;
+            }
             _animatedElements.Clear();
-            _viewModel = viewModel;
+            _viewModel = mainQuestsPopupData.QuestViewModel;
             _animatedElements = _questView.Init(_viewModel, AnimateElementsIn);
         }
     }

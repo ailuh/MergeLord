@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1920a6b0deba4544b51a8df4356bc57, type: 3}
   m_Name: Elf_lvl_3
   m_EditorClassIdentifier: 
-  _objectRef:
-    Description: 'A skeleton that already knows something '
-    Id: 3
-    RootLevelObject: {fileID: 11400000, guid: 9b287b7b855a44a4eafb0b2761a04e9b, type: 2}
-    Sprite: {fileID: 9163635013156823767, guid: 873e82b5df82bce44a09583b8ebc2cf1, type: 3}
-    Energy:
-      Type: 0
-      EnergyPerTick: 20
-      TickSeconds: 5
-    BaseLevel: 3
-  _objectPrefab: {fileID: 5432978670167957563, guid: d84967935b7b6384ca248db0846d03ec, type: 3}
-  _nextLevelObjectLevelObject: {fileID: 0}
+  Id: m_elf_a3
+  Description: Experienced elf. Almost never misses.
+  Sprite: {fileID: 9163635013156823767, guid: 873e82b5df82bce44a09583b8ebc2cf1, type: 3}
+  Level: 3
+  Prefab: {fileID: 5432978670167957563, guid: d84967935b7b6384ca248db0846d03ec, type: 3}
+  FirstChainConfig: {fileID: 11400000, guid: 9b287b7b855a44a4eafb0b2761a04e9b, type: 2}
+  NextLevelConfig: {fileID: 0}
+  _energy:
+    Type: 0
+    EnergyPerTick: 20
+    TickSeconds: 20
+  _energyIcon: {fileID: 0}

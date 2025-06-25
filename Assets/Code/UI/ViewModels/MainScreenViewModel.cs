@@ -19,7 +19,15 @@ namespace Code.UI.ViewModels
         
         public void OnQuestClicked(QuestViewModel questViewModel)
         {
-            _popupManager.ShowAsync(PopupType.QuestInfo, questViewModel).Forget();
+            _popupManager.ShowAsync(PopupType.QuestInfo, new MainQuestsPopupData(questViewModel)).Forget();
+        }
+        
+        public void OnBuildingShopClicked(BuildingShopViewModel buildingShopViewModel, CurrencyViewModel currencyViewModel, Action? onClose = null)
+        {
+            _popupManager.ShowAsync(
+                    PopupType.BuildingsInfo, 
+                    new BuildingShopPopupData(buildingShopViewModel, _popupManager, currencyViewModel, onClose))
+                    .Forget();
         }
     }
 }

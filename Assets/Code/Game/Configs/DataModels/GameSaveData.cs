@@ -9,7 +9,6 @@ namespace Code.Game.Configs.DataModels
     {
         public List<TileObjectData> Grid;
         public Dictionary<EnergyType, EnergyValue> Energy = new();
-        public int Coins;
         public int Level;
         public DateTime LastSaveUtc;
     }

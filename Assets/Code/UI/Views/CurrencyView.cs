@@ -1,31 +1,33 @@
 using System;
-using Code.Common.EditorUtils;
+using System.Collections.Generic;
 using Code.UI.ViewModels;
-using TMPro;
 using UnityEngine;
-using VContainer;
 
 namespace Code.UI.Views
 {
     public class CurrencyView : MonoBehaviour
     {
-        [SerializeField, CantBeNull] private TextMeshProUGUI _coinsText = null!;
-        [Inject] private CurrencyViewModel _viewModel = null!;
-        private IDisposable _coinsSubscription = null!;
-        
-        private void Start()
+        [SerializeField] private List<CurrencyItemView> _items = new();
+
+        private readonly List<IDisposable> _subscriptions = new();
+
+        public void Init(CurrencyViewModel viewModel)
         {
-            _coinsSubscription = _viewModel.Coins.Subscribe(UpdateView);
+            foreach (var binding in _items)
+            {
+                if (viewModel.Currency.TryGetValue(binding.CurrencyType, out var value))
+                {
+                    var subscription = value.Subscribe(binding.UpdateAmount);
+                    _subscriptions.Add(subscription);
+                }
+            }
         }
 
-        private void UpdateView(int coins)
-        {
-            _coinsText.text = coins.ToString();
-        }
-        
         private void OnDestroy()
         {
-            _coinsSubscription.Dispose();
+            foreach (var sub in _subscriptions)
+                sub.Dispose();
         }
     }
+    
 }

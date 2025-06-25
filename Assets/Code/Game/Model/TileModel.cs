@@ -1,4 +1,5 @@
 using System;
+using Code.Game.Configs.Monsters;
 using Code.Game.Enums;
 using Code.Game.Logic;
 using Code.UI.Views;
@@ -47,11 +48,20 @@ namespace Code.Game.Model
         public void Tick(double deltaTime, Action<EnergyType, int> onEnergyGenerated)
         {
             if (ContainedObject == null)
+            {
                 return;
+            }
 
-            var energyInfo = ContainedObject.ObjectRef.Energy;
-            if (energyInfo.TickSeconds <= 0)
+            if (ContainedObject.Config is not MonsterObjectConfig monsterConfig)
+            {
                 return;
+            }
+
+            var energyInfo = monsterConfig.Energy;
+            if (energyInfo.TickSeconds <= 0)
+            {
+                return;
+            }
 
             _accumulatedTime += deltaTime;
             var ticks = (int)(_accumulatedTime / energyInfo.TickSeconds);

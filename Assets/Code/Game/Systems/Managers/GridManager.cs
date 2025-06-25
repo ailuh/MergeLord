@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Code.Common.EditorUtils;
 using Code.Game.Configs;
-using Code.Game.Configs.Monsters;
 using Code.Game.Logic;
-using Code.Game.Model.Rewards;
 using Code.Game.Systems.Interfaces;
 using Code.Game.Systems.Services;
 using Code.UI.Views;
+using Configs.Objects;
 using UnityEngine;
 
 namespace Code.Game.Systems.Managers
@@ -19,14 +19,12 @@ namespace Code.Game.Systems.Managers
         private readonly Dictionary<Vector2Int, TileView> _tiles = new();
         private IGameMessageService _gameMessageService = null!;
         private DraggableFactory _draggableFactory;
-        private GridObjectCatalog _catalog;
         private DragDropService _dragDropService;
         private TileService _tileService;
 
-        public void Init(DraggableFactory factory, GridObjectCatalog catalog, DragDropService dragDropService, TileService tileService)
+        public void Init(DraggableFactory factory, DragDropService dragDropService, TileService tileService)
         {
             _draggableFactory = factory;
-            _catalog = catalog;
             _dragDropService = dragDropService;
             _tileService = tileService;
         }
@@ -52,7 +50,7 @@ namespace Code.Game.Systems.Managers
             var obj = tile.TryGetObject();
             if (obj != null)
             {
-                _gameMessageService.ShowMessage(obj.ObjectRef.Description, true, obj.ObjectRef);
+                _gameMessageService.ShowMessage(obj.Config.Description, true, obj.Config);
             }
             else
             {
@@ -74,7 +72,7 @@ namespace Code.Game.Systems.Managers
                 var objId = String.Empty;
                 if (obj != null)
                 {
-                    objId = obj.ObjectRef.Id;
+                    objId = obj.Config.Id;
                 }
                
                 result.Add(new TileObjectData
@@ -100,33 +98,23 @@ namespace Code.Game.Systems.Managers
             return null;
         }
         
-        public bool TryPlaceReward(RewardData reward)
+        public bool TryPlaceObject(GridObjectConfigBase configBase)
         {
             var freeTile = GetFirstFreeTile();
+            if (freeTile == null) return false;
 
-            if (freeTile == null)
-            {
-                return false;
-            }
-            var config = _catalog.GetConfig(reward.Id);
-            if (config == null)
-            {
-                return false;
-            }
-            var objectPrefab = _catalog.GetPrefab(reward.Id);
-            if (objectPrefab == null)
-            {
-                return false;
-            }
-            var obj = _draggableFactory.Create(freeTile, config.ObjectRef, objectPrefab);
-            if (obj == null)
-            {
-                return false;
+            var instance = _draggableFactory.Create(freeTile, configBase, configBase.Prefab);
+            if (instance == null) return false;
 
-            }
-            freeTile.SetObject(obj);
-            _dragDropService.RegisterDraggable(obj);            
+            freeTile.SetObject(instance);
+            _dragDropService.RegisterDraggable(instance);
+
             return true;
+        }
+        
+        public bool HasFreeTile()
+        {
+            return _tiles.Values.Any(tile => !tile.IsOccupied);
         }
         
         public void NotifyGridChanged()

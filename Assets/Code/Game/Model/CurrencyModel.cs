@@ -1,4 +1,6 @@
 
+using Code.Common.Reactive;
+using Code.Game.Enums;
 using Code.Game.State;
 
 namespace Code.Game.Model
@@ -12,20 +14,37 @@ namespace Code.Game.Model
             _state = state;
         }
 
-        public void AddCoins(int amount)
+        public int GetAmount(CurrencyType type)
         {
-            _state.Coins.Value += amount;
+            return _state.Currency.TryGetValue(type, out var value)
+                ? value.Value
+                : 0;
         }
 
-        public bool TrySpendCoins(int amount)
+        public void Add(CurrencyType type, int amount)
         {
-            if (_state.Coins.Value < amount)
+            if (!_state.Currency.ContainsKey(type))
+            {
+                _state.Currency[type] = new ReactiveProperty<int>(0);
+            }
+
+            _state.Currency[type].Value += amount;
+        }
+
+        public bool TrySpend(CurrencyType type, int amount)
+        {
+            if (!_state.Currency.TryGetValue(type, out var value) || value.Value < amount)
             {
                 return false;
             }
 
-            _state.Coins.Value -= amount;
+            value.Value -= amount;
             return true;
+        }
+
+        public bool HasEnough(CurrencyType type, int amount)
+        {
+            return _state.Currency.TryGetValue(type, out var value) && value.Value >= amount;
         }
     }
 }

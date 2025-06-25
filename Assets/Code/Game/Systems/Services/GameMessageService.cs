@@ -1,7 +1,9 @@
 ﻿using Code.Common.EditorUtils;
+using Code.Game.Configs.Interfaces;
 using Code.Game.Configs.Monsters;
 using Code.Game.Systems.Interfaces;
 using Code.UI.Popups;
+using Configs.Objects;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -28,24 +30,32 @@ namespace Code.Game.Systems.Services
             _popupManager = popupManager;
         }
         
-        public void ShowMessage(string message, bool isHasLvl = false, ObjectRef? objectRef = null)
+        public void ShowMessage(string message, bool isHasLvl = false, GridObjectConfigBase? config = null)
         {
             _messageText.text = message;
             _lvlPanel.gameObject.SetActive(isHasLvl);
-            if (isHasLvl && objectRef != null)
+            if (isHasLvl && config != null)
             {
-                SetInfoButton(objectRef.Value);
+                SetInfoButton(config);
             }
         }
 
-        private void ShowUnitLvlPopup(ObjectRef objectRef)
+        private void ShowUnitLvlPopup(GridObjectConfigBase config)
         {
-            _popupManager.ShowAsync(PopupType.UnitInfo, objectRef).Forget();
-        }
+            if (config is IObjectInfoChainProvider provider)
+            {
+                _popupManager
+                    .ShowAsync(PopupType.UnitInfo, new UnitInfoPopupData(provider))
+                    .Forget();
+            }
+            else
+            {
+                Debug.LogWarning($"Config {config.Id} does not implement IObjectInfoChainProvider");
+            }        }
 
-        private void SetInfoButton(ObjectRef objectRef)
+        private void SetInfoButton(GridObjectConfigBase config)
         {
-            _testInfoButton.onClick.AddListener(() => ShowUnitLvlPopup(objectRef));
+            _testInfoButton.onClick.AddListener(() => ShowUnitLvlPopup(config));
         }
     }
 }

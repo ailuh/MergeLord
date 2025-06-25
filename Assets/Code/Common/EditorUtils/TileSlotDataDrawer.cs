@@ -2,6 +2,7 @@ using Code.Game.Configs;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace Code.Common.EditorUtils
 {
     [CustomPropertyDrawer(typeof(TileObjectData))]
@@ -27,3 +28,4 @@ namespace Code.Common.EditorUtils
         }
     }
 }
+#endif

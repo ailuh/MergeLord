@@ -4,6 +4,7 @@
     {
         UnitInfo,
         QuestInfo,
-        RewardInfo
+        BuildingsInfo,
+        BuildingConfirm
     }
 }

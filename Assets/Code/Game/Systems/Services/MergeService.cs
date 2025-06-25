@@ -10,11 +10,11 @@ namespace Code.Game.Systems.Services
     {
         private readonly TileService _tileService;
         private readonly DraggableFactory _factory;
-        private readonly GridObjectCatalog _catalog;
+        private readonly MonsterObjectCatalog _catalog;
         private readonly IGameMessageService _messageService;
         private readonly IQuestEventBus _questEventBus;
         
-        public MergeService(TileService tileService, DraggableFactory factory, GridObjectCatalog catalog, IGameMessageService messageService, IQuestEventBus questEventBus)
+        public MergeService(TileService tileService, DraggableFactory factory, MonsterObjectCatalog catalog, IGameMessageService messageService, IQuestEventBus questEventBus)
         {
             _tileService = tileService;
             _factory = factory;
@@ -39,20 +39,20 @@ namespace Code.Game.Systems.Services
                 return null;
             }
 
-            if (fromPosDraggableObject.ObjectRef.Id != toObj.ObjectRef.Id)
+            if (fromPosDraggableObject.Config.Id != toObj.Config.Id)
             {
                 _messageService.ShowMessage("Objects cannot be merged!");
                 return null;
             }
 
-            var config = _catalog.GetConfig(toObj.ObjectRef.Id);
-            if (config == null || config.NextLevelObject == null)
+            var config = _catalog.GetConfig(toObj.Config.Id);
+            if (config == null || config.NextLevelConfig == null)
             {
                 _messageService.ShowMessage("Maximum level reached, merge impossible!");
                 return null;
             }
 
-            var objectPrefab = _catalog.GetPrefab(config.NextLevelObject.ObjectRef.Id);
+            var objectPrefab = _catalog.GetPrefab(config.NextLevelConfig.Id);
             if (objectPrefab == null)
             {
                 return null;
@@ -60,11 +60,11 @@ namespace Code.Game.Systems.Services
             Object.Destroy(fromPosDraggableObject.gameObject);
             Object.Destroy(toObj.gameObject);
             toTileModel.ClearObject();
-            _questEventBus.Raise(new MergeHappenedEvent(fromPosDraggableObject.ObjectRef.Id));
+            _questEventBus.Raise(new MergeHappenedEvent(fromPosDraggableObject.Config.Id));
 
             var tileView = toTileModel.GetView();
-            var newObject = _factory.Create(tileView, config.NextLevelObject.ObjectRef, objectPrefab);
-            _tileService.SetObject(toPos, config.NextLevelObject.ObjectRef.Id);
+            var newObject = _factory.Create(tileView, config.NextLevelConfig, objectPrefab);
+            _tileService.SetObject(toPos, config.NextLevelConfig.Id);
 
             _messageService.ShowMessage("Merge is successful!");
             return newObject;

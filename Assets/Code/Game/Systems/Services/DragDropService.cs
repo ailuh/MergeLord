@@ -48,7 +48,7 @@ namespace Code.Game.Systems.Services
             if (!targetModel.IsOccupied)
             {
                 dragged.MoveToTile(targetModel);
-                _tileService.SetObject(targetModel.Position, dragged.ObjectRef.Id);
+                _tileService.SetObject(targetModel.Position, dragged.Config.Id);
             }
             else
             {

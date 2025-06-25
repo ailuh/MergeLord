@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4bd38d54c49dae458617a0d09e5fc8b, type: 3}
+  m_Name: ElfHouse
+  m_EditorClassIdentifier: 
+  Id: h_elf_a1
+  Description: "Elf House. Creates Elves!\r"
+  Sprite: {fileID: 8214909051368771840, guid: 6fe55884e86b4134cb47981da477cb83, type: 3}
+  Level: 1
+  Prefab: {fileID: 1151635493285785696, guid: 75328c7b258c94646af2b33519d38d11, type: 3}
+  FirstChainConfig: {fileID: 11400000}
+  NextLevelConfig: {fileID: 0}
+  _displayName: Elf house
+  _costs:
+  - Currency: 0
+    Amount: 10
+  - Currency: 1
+    Amount: 5
+  _requiredLevel: 1
+  _energyCosts:
+  - _energyType: 0
+    _amount: 100
+  _energyIcon: {fileID: 0}

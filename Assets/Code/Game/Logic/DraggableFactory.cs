@@ -2,6 +2,7 @@
 using Code.Game.State;
 using Code.Game.Systems.Managers;
 using Code.UI.Views;
+using Configs.Objects;
 using UnityEngine;
 
 namespace Code.Game.Logic
@@ -19,7 +20,7 @@ namespace Code.Game.Logic
             _gameState = gameState;
         }
 
-        public DraggableObject? Create(TileView tileView, ObjectRef objectRef, DraggableObject draggablePrefab)
+        public DraggableObject? Create(TileView tileView, GridObjectConfigBase baseConfig, DraggableObject draggablePrefab)
         {
             if (!_gameState.Tiles.TryGetValue(tileView.GridPosition, out var tileModel))
             {
@@ -30,11 +31,11 @@ namespace Code.Game.Logic
             var draggableObject = Object.Instantiate(draggablePrefab, tileView.transform);
             if (draggableObject == null)
             {
-                Debug.LogError("[DraggableFactory] Failed to instantiate prefab for objectId: " + objectRef.Id);
+                Debug.LogError("[DraggableFactory] Failed to instantiate prefab for objectId: " + baseConfig.Id);
                 return null;
             }
 
-            draggableObject.Init(tileModel, _canvas, objectRef, _gridManager);
+            draggableObject.Init(tileModel, _canvas, baseConfig, _gridManager);
             return draggableObject;
         }
     }

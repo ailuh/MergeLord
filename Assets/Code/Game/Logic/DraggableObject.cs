@@ -1,8 +1,8 @@
 ﻿using System;
 using Code.Common.EditorUtils;
-using Code.Game.Configs.Monsters;
 using Code.Game.Model;
 using Code.Game.Systems.Managers;
+using Configs.Objects;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,21 +12,20 @@ namespace Code.Game.Logic
     {
         [SerializeField, CantBeNull] private RectTransform _rectTransform = null!;
         [SerializeField, CantBeNull] private CanvasGroup _canvasGroup = null!;
-
-        public ObjectRef ObjectRef { get; private set; }
-
+        public GridObjectConfigBase Config { get; private set; }
+        
         public event Action<DraggableObject, PointerEventData>? OnDragEnded;
 
         private TileModel _currentModel = null!;
         private Canvas _canvas = null!;
         private GridManager _gridManager = null!;
 
-        public void Init(TileModel tileModel, Canvas canvas, ObjectRef objectRef, GridManager gridManager)
+        public void Init(TileModel tileModel, Canvas canvas, GridObjectConfigBase objectConfig, GridManager gridManager)
         {
             _currentModel = tileModel;
             _canvas = canvas;
             _gridManager = gridManager;
-            ObjectRef = objectRef;
+            Config = objectConfig;
 
             MoveToTile(tileModel, true);
         }

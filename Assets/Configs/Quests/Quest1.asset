@@ -16,10 +16,10 @@ MonoBehaviour:
   Description: Quest 1 description
   Kind: 1
   ConditionType: 0
-  ConditionTargetId: 1
+  ConditionTargetId: m_elf_a1
   ConditionValue: 1
   RequiredQuestIds: []
   NextQuests: []
   Reward:
-    Id: 1
+    Id: m_elf_a2
     Icon: {fileID: -8221672207578928855, guid: e30a0f46e479a2b42970c9447543444d, type: 3}

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1920a6b0deba4544b51a8df4356bc57, type: 3}
   m_Name: Elf_lvl_2
   m_EditorClassIdentifier: 
-  _objectRef:
-    Description: 'A skeleton that already knows something '
-    Id: 2
-    RootLevelObject: {fileID: 11400000, guid: 9b287b7b855a44a4eafb0b2761a04e9b, type: 2}
-    Sprite: {fileID: -4594307042656651422, guid: d2338f38102275245bb9b341ab52431f, type: 3}
-    Energy:
-      Type: 0
-      EnergyPerTick: 15
-      TickSeconds: 4
-    BaseLevel: 2
-  _objectPrefab: {fileID: 5432978670167957563, guid: 28ad3939a8aae4a45808a3cbef14b0e7, type: 3}
-  _nextLevelObjectLevelObject: {fileID: 11400000, guid: f88ce489556a44b4eb12210142b4ac77, type: 2}
+  Id: m_elf_a2
+  Description: Advanced Elf. Knows advanced techniques.
+  Sprite: {fileID: -4594307042656651422, guid: d2338f38102275245bb9b341ab52431f, type: 3}
+  Level: 2
+  Prefab: {fileID: 5432978670167957563, guid: 28ad3939a8aae4a45808a3cbef14b0e7, type: 3}
+  FirstChainConfig: {fileID: 11400000, guid: 9b287b7b855a44a4eafb0b2761a04e9b, type: 2}
+  NextLevelConfig: {fileID: 11400000, guid: f88ce489556a44b4eb12210142b4ac77, type: 2}
+  _energy:
+    Type: 0
+    EnergyPerTick: 15
+    TickSeconds: 20
+  _energyIcon: {fileID: 0}

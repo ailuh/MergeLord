@@ -25,5 +25,5 @@ MonoBehaviour:
   - 4
   NextQuests: []
   Reward:
-    Id: 2
-    Icon: {fileID: -4594307042656651422, guid: d2338f38102275245bb9b341ab52431f, type: 3}
+    Id: m_elf_a3
+    Icon: {fileID: 9163635013156823767, guid: 873e82b5df82bce44a09583b8ebc2cf1, type: 3}

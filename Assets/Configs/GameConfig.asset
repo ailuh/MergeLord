@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a7ad0b852324c43886cb64cbb455a1, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  _gridSize: {x: 7, y: 7}
+  _gridSize: {x: 5, y: 5}
   _tiles:
   - Position: {x: 0, y: 0}
-    ObjectId: 1
+    ObjectId: m_elf_a1
   - Position: {x: 1, y: 0}
     ObjectId: 
   - Position: {x: 2, y: 0}
@@ -23,13 +23,13 @@ MonoBehaviour:
   - Position: {x: 3, y: 0}
     ObjectId: 
   - Position: {x: 4, y: 0}
-    ObjectId: 1
+    ObjectId: m_elf_a1
   - Position: {x: 5, y: 0}
     ObjectId: 
   - Position: {x: 6, y: 0}
     ObjectId: 
   - Position: {x: 0, y: 1}
-    ObjectId: 2
+    ObjectId: m_elf_a1
   - Position: {x: 1, y: 1}
     ObjectId: 
   - Position: {x: 2, y: 1}
@@ -39,7 +39,7 @@ MonoBehaviour:
   - Position: {x: 4, y: 1}
     ObjectId: 
   - Position: {x: 5, y: 1}
-    ObjectId: 2
+    ObjectId: m_elf_a1
   - Position: {x: 6, y: 1}
     ObjectId: 
   - Position: {x: 0, y: 2}
@@ -47,13 +47,13 @@ MonoBehaviour:
   - Position: {x: 1, y: 2}
     ObjectId: 
   - Position: {x: 2, y: 2}
-    ObjectId: 3
+    ObjectId: m_elf_a1
   - Position: {x: 3, y: 2}
     ObjectId: 
   - Position: {x: 4, y: 2}
     ObjectId: 
   - Position: {x: 5, y: 2}
-    ObjectId: 3
+    ObjectId: m_elf_a1
   - Position: {x: 6, y: 2}
     ObjectId: 
   - Position: {x: 0, y: 3}
@@ -64,57 +64,17 @@ MonoBehaviour:
     ObjectId: 
   - Position: {x: 3, y: 3}
     ObjectId: 
-  - Position: {x: 4, y: 3}
-    ObjectId: 
-  - Position: {x: 5, y: 3}
-    ObjectId: 
-  - Position: {x: 6, y: 3}
-    ObjectId: 
-  - Position: {x: 0, y: 4}
-    ObjectId: 
-  - Position: {x: 1, y: 4}
-    ObjectId: 
-  - Position: {x: 2, y: 4}
-    ObjectId: 
-  - Position: {x: 3, y: 4}
-    ObjectId: 
-  - Position: {x: 4, y: 4}
-    ObjectId: 
-  - Position: {x: 5, y: 4}
-    ObjectId: 
-  - Position: {x: 6, y: 4}
-    ObjectId: 
-  - Position: {x: 0, y: 5}
-    ObjectId: 
-  - Position: {x: 1, y: 5}
-    ObjectId: 
-  - Position: {x: 2, y: 5}
-    ObjectId: 
-  - Position: {x: 3, y: 5}
-    ObjectId: 
-  - Position: {x: 4, y: 5}
-    ObjectId: 
-  - Position: {x: 5, y: 5}
-    ObjectId: 
-  - Position: {x: 6, y: 5}
-    ObjectId: 
-  - Position: {x: 0, y: 6}
-    ObjectId: 
-  - Position: {x: 1, y: 6}
-    ObjectId: 
-  - Position: {x: 2, y: 6}
-    ObjectId: 
-  - Position: {x: 3, y: 6}
-    ObjectId: 
-  - Position: {x: 4, y: 6}
-    ObjectId: 
-  - Position: {x: 5, y: 6}
-    ObjectId: 
-  - Position: {x: 6, y: 6}
-    ObjectId: 
   _useSaveData: 0
   _defaultEnergy:
   - Type: 0
-    Initial: 5000
+    Initial: 1000
     Max: 10000
   _questCatalog: {fileID: 11400000, guid: c7035edb9f1de984b96d5cda54a923ef, type: 2}
+  _initialAvailableBuilding: []
+  _startingCurrency:
+  - Type: 0
+    Initial: 10
+  - Type: 1
+    Initial: 15
+  - Type: 2
+    Initial: 20
